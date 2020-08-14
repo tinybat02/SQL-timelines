@@ -13,9 +13,11 @@
   "devDependencies": {
     "@grafana/data": "next",
     "@grafana/toolkit": "next",
-    "@grafana/ui": "next"
+    "@grafana/ui": "next",
+    "@types/react-calendar-timeline": "^0.26.2"
   },
   "dependencies": {
+    "interactjs": "^1.9.20",
     "react-calendar-timeline": "^0.27.0"
   }
 }
