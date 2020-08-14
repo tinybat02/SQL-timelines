@@ -52,6 +52,7 @@ export class MainPanel extends PureComponent<Props, State> {
         style={{
           width,
           height,
+          overflowY: 'scroll',
         }}
       >
         <Timeline groups={groups} items={items} visibleTimeStart={visibleTimeStart} visibleTimeEnd={visibleTimeEnd} />

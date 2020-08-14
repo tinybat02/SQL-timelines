@@ -11138,7 +11138,8 @@ function (_super) {
     return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       style: {
         width: width,
-        height: height
+        height: height,
+        overflowY: 'scroll'
       }
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_calendar_timeline__WEBPACK_IMPORTED_MODULE_2___default.a, {
       groups: groups,
