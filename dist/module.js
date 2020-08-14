@@ -11054,14 +11054,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_calendar_timeline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-calendar-timeline */ "../node_modules/react-calendar-timeline/lib/index.js");
 /* harmony import */ var react_calendar_timeline__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_calendar_timeline__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils_helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/helper */ "./utils/helper.ts");
-/* harmony import */ var react_calendar_timeline_lib_Timeline_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-calendar-timeline/lib/Timeline.css */ "../node_modules/react-calendar-timeline/lib/Timeline.css");
-/* harmony import */ var react_calendar_timeline_lib_Timeline_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_calendar_timeline_lib_Timeline_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils_helper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/helper */ "./utils/helper.ts");
+/* harmony import */ var react_calendar_timeline_lib_Timeline_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-calendar-timeline/lib/Timeline.css */ "../node_modules/react-calendar-timeline/lib/Timeline.css");
+/* harmony import */ var react_calendar_timeline_lib_Timeline_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_calendar_timeline_lib_Timeline_css__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
 
 
+
+var initialState = {
+  groups: [],
+  items: [],
+  visibleTimeStart: moment__WEBPACK_IMPORTED_MODULE_3___default()().add(-6, 'hour'),
+  visibleTimeEnd: moment__WEBPACK_IMPORTED_MODULE_3___default()().add(6, 'hour')
+};
 
 var MainPanel =
 /** @class */
@@ -11071,36 +11080,49 @@ function (_super) {
   function MainPanel() {
     var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.state = {
-      groups: [],
-      items: []
-    };
+    _this.state = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, initialState);
     return _this;
   }
 
   MainPanel.prototype.componentDidMount = function () {
-    console.log('timelines ', this.props.data);
-
     if (this.props.data.series.length > 0) {
       var fields = this.props.data.series[0].fields;
 
-      var _a = Object(_utils_helper__WEBPACK_IMPORTED_MODULE_3__["processData"])(fields),
+      var _a = Object(_utils_helper__WEBPACK_IMPORTED_MODULE_4__["processData"])(fields),
           groups = _a.groups,
-          items = _a.items;
+          items = _a.items,
+          visibleTimeStart = _a.visibleTimeStart,
+          visibleTimeEnd = _a.visibleTimeEnd;
 
       this.setState({
         groups: groups,
-        items: items
+        items: items,
+        visibleTimeStart: visibleTimeStart,
+        visibleTimeEnd: visibleTimeEnd
       });
     }
   };
 
   MainPanel.prototype.componentDidUpdate = function (prevProps) {
     if (prevProps.data.series[0] !== this.props.data.series[0]) {
-      this.setState({
-        groups: [],
-        items: []
-      });
+      if (this.props.data.series.length > 0) {
+        var fields = this.props.data.series[0].fields;
+
+        var _a = Object(_utils_helper__WEBPACK_IMPORTED_MODULE_4__["processData"])(fields),
+            groups = _a.groups,
+            items = _a.items,
+            visibleTimeStart = _a.visibleTimeStart,
+            visibleTimeEnd = _a.visibleTimeEnd;
+
+        this.setState({
+          groups: groups,
+          items: items,
+          visibleTimeStart: visibleTimeStart,
+          visibleTimeEnd: visibleTimeEnd
+        });
+      } else {
+        this.setState(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, initialState));
+      }
     }
   };
 
@@ -11110,7 +11132,9 @@ function (_super) {
         height = _a.height;
     var _b = this.state,
         groups = _b.groups,
-        items = _b.items;
+        items = _b.items,
+        visibleTimeStart = _b.visibleTimeStart,
+        visibleTimeEnd = _b.visibleTimeEnd;
     return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       style: {
         width: width,
@@ -11118,7 +11142,9 @@ function (_super) {
       }
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_calendar_timeline__WEBPACK_IMPORTED_MODULE_2___default.a, {
       groups: groups,
-      items: items
+      items: items,
+      visibleTimeStart: visibleTimeStart,
+      visibleTimeEnd: visibleTimeEnd
     }));
   };
 
@@ -11177,13 +11203,17 @@ var defaults = {};
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "processData", function() { return processData; });
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "moment");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "moment");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+
 
 var processData = function processData(data) {
   // const hashArray = data[0];
   var startTimeArray = data[1];
   var endTimeArray = data[2];
+  var visibleTimeStart = moment__WEBPACK_IMPORTED_MODULE_1___default.a.unix(Math.min.apply(Math, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(startTimeArray.values.buffer)) - 300);
+  var visibleTimeEnd = moment__WEBPACK_IMPORTED_MODULE_1___default.a.unix(Math.max.apply(Math, Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__spread"])(endTimeArray.values.buffer)) + 300);
   var groups = [];
   var items = [];
   startTimeArray.values.buffer.map(function (item, i) {
@@ -11195,13 +11225,15 @@ var processData = function processData(data) {
       id: i,
       group: i,
       title: '',
-      start_time: moment__WEBPACK_IMPORTED_MODULE_0___default.a.unix(item),
-      end_time: moment__WEBPACK_IMPORTED_MODULE_0___default.a.unix(endTimeArray.values.buffer[i])
+      start_time: moment__WEBPACK_IMPORTED_MODULE_1___default.a.unix(item),
+      end_time: moment__WEBPACK_IMPORTED_MODULE_1___default.a.unix(endTimeArray.values.buffer[i])
     });
   });
   return {
     groups: groups,
-    items: items
+    items: items,
+    visibleTimeStart: visibleTimeStart,
+    visibleTimeEnd: visibleTimeEnd
   };
 };
 

@@ -6,6 +6,9 @@ export const processData = (data: Array<FieldBuffer>) => {
   const startTimeArray = data[1];
   const endTimeArray = data[2];
 
+  const visibleTimeStart = moment.unix(Math.min(...startTimeArray.values.buffer) - 300);
+  const visibleTimeEnd = moment.unix(Math.max(...endTimeArray.values.buffer) + 300);
+
   const groups: Array<IGroup> = [];
   const items: Array<IItem> = [];
   startTimeArray.values.buffer.map((item, i: number) => {
@@ -19,5 +22,5 @@ export const processData = (data: Array<FieldBuffer>) => {
     });
   });
 
-  return { groups, items };
+  return { groups, items, visibleTimeStart, visibleTimeEnd };
 };
